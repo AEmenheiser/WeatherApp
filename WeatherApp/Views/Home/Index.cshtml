@@ -1,0 +1,51 @@
+﻿<h1>Weather App</h1>
+<h2>Choose Location</h2>
+<span id="error"></span> 
+<input type="text" name="city" id="city" placeholder="City Name">
+<button id="submitLocation">Find</button>
+<div id="show"></div>
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script language="javascript">
+        $(document).ready(function () {
+
+            $("#submitLocation").click(function () {
+
+                var city = $("#city").val();
+                if (city != '') {
+
+                    $.ajax({
+                        type: "GET",
+                        url: "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=796dec251e40153a2abe7bd311626e41&units=imperial",
+                        dataType: "jsonp",
+                        success: function (data) {
+                            console.log(data); //check to see if data has been returned 
+                            console.log(data.weather[0].main);
+                            console.log(data.main);
+                            console.log(data.main.temp);
+                            var information = show(data);
+                            $("#show").html(information);
+                          
+
+                            var information = show(data);
+                           
+                        }
+                    });
+                } else {
+                        $('#error').html('Field cannot be empty');
+                    }
+                });
+        })
+
+        function show(data) {
+            return "<h3><strong>Temp</strong>: " + data.main.temp + "</h3>"
+            "<h3>" + data.main + "</h3>" //still trying to add more ways to display more data
+        }
+        
+    </script>
+}
